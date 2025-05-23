@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>АгроМаркет Наманган - Фермеры и Оптовики</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .active-nav-link {
+            color: #2563eb; /* Tailwind blue-600 */
+            font-weight: 600;
+        }
+        .nav-link {
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #3b82f6; /* Tailwind blue-500 */
+        }
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5); /* Dim background */
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 0.5rem; /* rounded-lg */
+            position: relative;
+        }
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .page-section {
+            display: none; /* Hidden by default */
+            padding-top: 4rem; /* Adjust based on navbar height */
+        }
+        .page-section.active {
+            display: block;
+        }
+        .hero-bg {
+            background-image: url('https://placehold.co/1200x600/a0aec0/ffffff?text=Фермерское+поле+в+Намангане');
+            background-size: cover;
+            background-position: center;
+        }
+        .product-card img {
+            aspect-ratio: 3/2;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <nav class="bg-white shadow-md fixed w-full z-50 top-0">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-blue-600 nav-link" data-page="home">
+                <i class="fas fa-tractor mr-2"></i>АгроМаркет Наманган
+            </a>
+            <div class="hidden md:flex space-x-4">
+                <a href="#" class="text-gray-600 nav-link active-nav-link" data-page="home">Главная</a>
+                <a href="#" class="text-gray-600 nav-link" data-page="products">Продукты</a>
+                <a href="#" class="text-gray-600 nav-link" data-page="farmers">Фермерам</a>
+                <a href="#" class="text-gray-600 nav-link" data-page="buyers">Покупателям</a>
+                <a href="#" class="text-gray-600 nav-link" data-page="about">О нас</a>
+                <a href="#" class="text-gray-600 nav-link" data-page="news">Новости</a>
+                <a href="#" class="text-gray-600 nav-link" data-page="contact">Контакты</a>
+                <a href="#" class="text-gray-600 nav-link" data-page="faq">FAQ</a>
+            </div>
+            <div class="md:hidden flex items-center">
+                <button id="mobile-menu-button" class="text-gray-600 focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden bg-white shadow-lg">
+            <a href="#" class="block py-2 px-4 text-sm text-gray-600 hover:bg-blue-500 hover:text-white nav-link" data-page="home">Главная</a>
+            <a href="#" class="block py-2 px-4 text-sm text-gray-600 hover:bg-blue-500 hover:text-white nav-link" data-page="products">Продукты</a>
+            <a href="#" class="block py-2 px-4 text-sm text-gray-600 hover:bg-blue-500 hover:text-white nav-link" data-page="farmers">Фермерам</a>
+            <a href="#" class="block py-2 px-4 text-sm text-gray-600 hover:bg-blue-500 hover:text-white nav-link" data-page="buyers">Покупателям</a>
+            <a href="#" class="block py-2 px-4 text-sm text-gray-600 hover:bg-blue-500 hover:text-white nav-link" data-page="about">О нас</a>
+            <a href="#" class="block py-2 px-4 text-sm text-gray-600 hover:bg-blue-500 hover:text-white nav-link" data-page="news">Новости</a>
+            <a href="#" class="block py-2 px-4 text-sm text-gray-600 hover:bg-blue-500 hover:text-white nav-link" data-page="contact">Контакты</a>
+            <a href="#" class="block py-2 px-4 text-sm text-gray-600 hover:bg-blue-500 hover:text-white nav-link" data-page="faq">FAQ</a>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 md:px-6 pt-20 md:pt-24 pb-12">
+        <section id="home" class="page-section active">
+            <div class="hero-bg text-white py-20 md:py-32 px-6 md:px-10 rounded-lg shadow-xl">
+                <div class="bg-black bg-opacity-50 p-6 md:p-10 rounded-lg max-w-3xl">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">Соединяем Фермеров и Оптовых Покупателей в Намангане</h1>
+                    <p class="text-lg md:text-xl mb-8">Свежие продукты напрямую от фермеров Наманганской области для вашего бизнеса.</p>
+                    <div class="space-y-4 sm:space-y-0 sm:space-x-4">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition duration-300 w-full sm:w-auto nav-link" data-page="products">
+                            <i class="fas fa-shopping-basket mr-2"></i>Смотреть Продукты
+                        </button>
+                        <button class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition duration-300 w-full sm:w-auto open-modal-button" data-modal="farmerRegistrationModal">
+                            <i class="fas fa-seedling mr-2"></i>Стать Партнером (Фермер)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 py-10 bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-3xl font-semibold text-center text-gray-700 mb-8">Почему выбирают нас?</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center p-6 border border-gray-200 rounded-lg hover:shadow-xl transition-shadow">
+                        <i class="fas fa-leaf text-4xl text-green-500 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Свежесть Гарантирована</h3>
+                        <p class="text-gray-600">Продукция напрямую от полей Намангана к вашему складу.</p>
+                    </div>
+                    <div class="text-center p-6 border border-gray-200 rounded-lg hover:shadow-xl transition-shadow">
+                        <i class="fas fa-truck text-4xl text-blue-500 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Прямые Поставки</h3>
+                        <p class="text-gray-600">Минуя посредников, вы получаете лучшие цены и условия.</p>
+                    </div>
+                    <div class="text-center p-6 border border-gray-200 rounded-lg hover:shadow-xl transition-shadow">
+                        <i class="fas fa-users text-4xl text-purple-500 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Поддержка Местных Фермеров</h3>
+                        <p class="text-gray-600">Мы помогаем развивать сельское хозяйство региона.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 py-10">
+                <h2 class="text-3xl font-semibold text-center text-gray-700 mb-8">Популярные Категории</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="navigateToPage('products', { category: 'fruits' })">
+                        <img src="https://placehold.co/400x300/f9a8d4/4a044e?text=Фрукты" alt="Фрукты" class="w-full h-40 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg text-center">Фрукты</h3>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="navigateToPage('products', { category: 'vegetables' })">
+                        <img src="https://placehold.co/400x300/a7f3d0/065f46?text=Овощи" alt="Овощи" class="w-full h-40 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg text-center">Овощи</h3>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="navigateToPage('products', { category: 'dairy' })">
+                        <img src="https://placehold.co/400x300/bfdbfe/1e3a8a?text=Молочные+Продукты" alt="Молочные Продукты" class="w-full h-40 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg text-center">Молочные Продукты</h3>
+                        </div>
+                    </div>
+                     <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="navigateToPage('products', { category: 'grains' })">
+                        <img src="https://placehold.co/400x300/fde68a/78350f?text=Зерновые" alt="Зерновые" class="w-full h-40 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg text-center">Зерновые</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="products" class="page-section">
+            <h1 class="text-3xl md:text-4xl font-bold mb-8 text-center text-gray-700">Каталог Продукции</h1>
+            <div class="mb-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div class="relative w-full sm:w-1/2 md:w-1/3">
+                    <input type="text" id="productSearch" placeholder="Поиск по названию..." class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <i class="fas fa-search absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <div class="relative w-full sm:w-auto">
+                    <select id="categoryFilter" class="w-full sm:w-auto p-3 border border-gray-300 rounded-lg shadow-sm appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white">
+                        <option value="all">Все категории</option>
+                        <option value="fruits">Фрукты</option>
+                        <option value="vegetables">Овощи</option>
+                        <option value="dairy">Молочные продукты</option>
+                        <option value="grains">Зерновые</option>
+                        <option value="meat">Мясо</option>
+                    </select>
+                     <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                </div>
+            </div>
+
+            <div id="productList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                </div>
+            <p id="noResultsMessage" class="text-center text-gray-500 text-xl mt-10 hidden">По вашему запросу ничего не найдено.</p>
+        </section>
+
+        <section id="farmers" class="page-section">
+            <div class="bg-white p-6 md:p-10 rounded-lg shadow-xl">
+                <div class="text-center">
+                    <i class="fas fa-hands-helping text-5xl text-green-600 mb-6"></i>
+                    <h1 class="text-3xl md:text-4xl font-bold mb-4 text-gray-700">Присоединяйтесь к Платформе, Фермеры!</h1>
+                    <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">Расширьте свой рынок сбыта, находите надежных оптовых покупателей и получайте справедливую цену за ваш труд.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 mt-10 items-center">
+                    <div>
+                        <img src="https://placehold.co/600x400/c7d2fe/3730a3?text=Фермер+с+урожаем" alt="Фермер с урожаем" class="rounded-lg shadow-md w-full">
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Преимущества для Фермеров:</h2>
+                        <ul class="list-disc list-inside space-y-3 text-gray-600 mb-8">
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Прямой доступ к оптовым покупателям.</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Прозрачные условия и цены.</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Увеличение объемов продаж.</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Поддержка и консультации от платформы.</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Удобное размещение информации о вашей продукции.</li>
+                        </ul>
+                        <button class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition duration-300 open-modal-button" data-modal="farmerRegistrationModal">
+                            <i class="fas fa-user-plus mr-2"></i>Зарегистрироваться как Фермер
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-12 pt-8 border-t border-gray-200">
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-6 text-center">Как это работает?</h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="bg-gray-50 p-6 rounded-lg shadow-sm text-center">
+                            <div class="bg-green-100 text-green-600 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4 text-2xl font-bold">1</div>
+                            <h4 class="font-semibold text-lg mb-2">Регистрация</h4>
+                            <p class="text-sm text-gray-600">Заполните простую форму и расскажите о своем хозяйстве.</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-lg shadow-sm text-center">
+                             <div class="bg-green-100 text-green-600 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4 text-2xl font-bold">2</div>
+                            <h4 class="font-semibold text-lg mb-2">Размещение Продукции</h4>
+                            <p class="text-sm text-gray-600">Добавьте информацию о доступных товарах, объемах и ценах.</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-lg shadow-sm text-center">
+                             <div class="bg-green-100 text-green-600 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4 text-2xl font-bold">3</div>
+                            <h4 class="font-semibold text-lg mb-2">Получение Заказов</h4>
+                            <p class="text-sm text-gray-600">Получайте запросы от покупателей и заключайте выгодные сделки.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="buyers" class="page-section">
+             <div class="bg-white p-6 md:p-10 rounded-lg shadow-xl">
+                <div class="text-center">
+                    <i class="fas fa-store text-5xl text-blue-600 mb-6"></i>
+                    <h1 class="text-3xl md:text-4xl font-bold mb-4 text-gray-700">Надежные Поставки для Вашего Бизнеса!</h1>
+                    <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">Получайте доступ к широкому ассортименту свежей продукции напрямую от фермеров Намангана по выгодным ценам.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 mt-10 items-center">
+                     <div>
+                        <img src="https://placehold.co/600x400/dbeafe/1e40af?text=Оптовый+склад" alt="Оптовый склад" class="rounded-lg shadow-md w-full">
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Преимущества для Оптовых Покупателей:</h2>
+                        <ul class="list-disc list-inside space-y-3 text-gray-600 mb-8">
+                            <li><i class="fas fa-check-circle text-blue-500 mr-2"></i>Широкий выбор свежей продукции.</li>
+                            <li><i class="fas fa-check-circle text-blue-500 mr-2"></i>Конкурентные цены от производителей.</li>
+                            <li><i class="fas fa-check-circle text-blue-500 mr-2"></i>Гарантия качества и происхождения товара.</li>
+                            <li><i class="fas fa-check-circle text-blue-500 mr-2"></i>Удобный поиск и заказ продукции.</li>
+                            <li><i class="fas fa-check-circle text-blue-500 mr-2"></i>Надежные и проверенные фермерские хозяйства.</li>
+                        </ul>
+                        <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition duration-300 open-modal-button" data-modal="buyerRegistrationModal">
+                           <i class="fas fa-user-plus mr-2"></i> Зарегистрироваться как Покупатель
+                        </button>
+                    </div>
+                </div>
+                 <div class="mt-12 pt-8 border-t border-gray-200">
+                    <h3 class="text-2xl font-semibold text-gray-700 mb-6 text-center">Как это работает?</h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="bg-gray-50 p-6 rounded-lg shadow-sm text-center">
+                            <div class="bg-blue-100 text-blue-600 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4 text-2xl font-bold">1</div>
+                            <h4 class="font-semibold text-lg mb-2">Регистрация</h4>
+                            <p class="text-sm text-gray-600">Создайте аккаунт и укажите ваши потребности.</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-lg shadow-sm text-center">
+                             <div class="bg-blue-100 text-blue-600 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4 text-2xl font-bold">2</div>
+                            <h4 class="font-semibold text-lg mb-2">Поиск Продукции</h4>
+                            <p class="text-sm text-gray-600">Используйте фильтры для поиска нужных товаров и фермеров.</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-lg shadow-sm text-center">
+                             <div class="bg-blue-100 text-blue-600 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4 text-2xl font-bold">3</div>
+                            <h4 class="font-semibold text-lg mb-2">Оформление Заказа</h4>
+                            <p class="text-sm text-gray-600">Связывайтесь с фермерами напрямую и договаривайтесь о поставках.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="page-section">
+            <div class="bg-white p-6 md:p-10 rounded-lg shadow-xl">
+                <h1 class="text-3xl md:text-4xl font-bold mb-8 text-center text-gray-700">О Платформе "АгроМаркет Наманган"</h1>
+                <div class="grid md:grid-cols-2 gap-10 items-center">
+                    <div>
+                        <img src="https://placehold.co/600x450/e0e7ff/4338ca?text=Команда+АгроМаркет" alt="Команда АгроМаркет" class="rounded-lg shadow-md w-full">
+                    </div>
+                    <div class="text-gray-600 space-y-4 text-lg">
+                        <p><strong class="text-blue-600">Наша миссия</strong> - создать эффективный и прозрачный мост между фермерами Наманганской области и оптовыми покупателями, способствуя развитию местного сельского хозяйства и обеспечивая бизнес качественной продукцией.</p>
+                        <p>Мы верим, что современные технологии могут упростить традиционные процессы закупок и продаж, делая их более выгодными для всех участников рынка.</p>
+                        <p>"АгроМаркет Наманган" стремится стать надежным партнером как для трудолюбивых фермеров, так и для предприимчивых оптовиков, предлагая удобный сервис, актуальную информацию и поддержку на каждом этапе сотрудничества.</p>
+                        <h3 class="text-xl font-semibold text-gray-700 pt-4">Наши ценности:</h3>
+                        <ul class="list-disc list-inside space-y-2 pl-4">
+                            <li><i class="fas fa-star text-yellow-500 mr-2"></i>Качество и свежесть продукции</li>
+                            <li><i class="fas fa-handshake text-green-500 mr-2"></i>Честность и прозрачность сделок</li>
+                            <li><i class="fas fa-cogs text-blue-500 mr-2"></i>Инновации и удобство использования</li>
+                            <li><i class="fas fa-users text-purple-500 mr-2"></i>Поддержка местного сообщества</li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="mt-12 pt-8 border-t border-gray-200">
+                    <h2 class="text-2xl font-semibold text-center text-gray-700 mb-8">Наша Команда (Пример)</h2>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-gray-50 p-6 rounded-lg shadow-sm text-center">
+                            <img src="https://placehold.co/150x150/d1d5db/1f2937?text=Фото+1" alt="Сотрудник 1" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                            <h4 class="font-semibold text-lg">Алишер Валиев</h4>
+                            <p class="text-sm text-blue-600">Основатель и CEO</p>
+                            <p class="text-xs text-gray-500 mt-1">"Стремлюсь сделать сельское хозяйство Намангана более технологичным."</p>
+                        </div>
+                         <div class="bg-gray-50 p-6 rounded-lg shadow-sm text-center">
+                            <img src="https://placehold.co/150x150/d1d5db/1f2937?text=Фото+2" alt="Сотрудник 2" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                            <h4 class="font-semibold text-lg">Гульнора Каримова</h4>
+                            <p class="text-sm text-blue-600">Менеджер по работе с фермерами</p>
+                             <p class="text-xs text-gray-500 mt-1">"Помогаю фермерам найти лучшие рынки сбыта."</p>
+                        </div>
+                         <div class="bg-gray-50 p-6 rounded-lg shadow-sm text-center">
+                            <img src="https://placehold.co/150x150/d1d5db/1f2937?text=Фото+3" alt="Сотрудник 3" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                            <h4 class="font-semibold text-lg">Тимур Ибрагимов</h4>
+                            <p class="text-sm text-blue-600">Технический директор</p>
+                            <p class="text-xs text-gray-500 mt-1">"Обеспечиваю стабильную и удобную работу платформы."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="news" class="page-section">
+            <h1 class="text-3xl md:text-4xl font-bold mb-8 text-center text-gray-700">Новости и Статьи</h1>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
+                    <img src="https://placehold.co/400x250/86efac/14532d?text=Новость+1" alt="Новость 1" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="text-xs text-gray-500">20 Мая 2025</span>
+                        <h2 class="text-xl font-semibold my-2 text-gray-800 hover:text-blue-600 transition-colors">Новые технологии в выращивании томатов в Намангане</h2>
+                        <p class="text-gray-600 text-sm mb-4">Фермеры региона успешно внедряют инновационные методы для повышения урожайности...</p>
+                        <a href="#" class="text-blue-600 hover:underline font-medium">Читать далее <i class="fas fa-arrow-right text-xs ml-1"></i></a>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
+                    <img src="https://placehold.co/400x250/93c5fd/1e3a8a?text=Новость+2" alt="Новость 2" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="text-xs text-gray-500">15 Мая 2025</span>
+                        <h2 class="text-xl font-semibold my-2 text-gray-800 hover:text-blue-600 transition-colors">Семинар для оптовых покупателей: Как выбрать качественные фрукты</h2>
+                        <p class="text-gray-600 text-sm mb-4">Наша платформа организовала обучающий семинар для партнеров-оптовиков...</p>
+                        <a href="#" class="text-blue-600 hover:underline font-medium">Читать далее <i class="fas fa-arrow-right text-xs ml-1"></i></a>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
+                    <img src="https://placehold.co/400x250/fcd34d/78350f?text=Новость+3" alt="Новость 3" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="text-xs text-gray-500">10 Мая 2025</span>
+                        <h2 class="text-xl font-semibold my-2 text-gray-800 hover:text-blue-600 transition-colors">Поддержка экспорта: Наманганские абрикосы на мировом рынке</h2>
+                        <p class="text-gray-600 text-sm mb-4">Обсуждаем перспективы экспорта местной продукции с участием государственных органов...</p>
+                        <a href="#" class="text-blue-600 hover:underline font-medium">Читать далее <i class="fas fa-arrow-right text-xs ml-1"></i></a>
+                    </div>
+                </div>
+                 <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
+                    <img src="https://placehold.co/400x250/a5b4fc/312e81?text=Новость+4" alt="Новость 4" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="text-xs text-gray-500">5 Мая 2025</span>
+                        <h2 class="text-xl font-semibold my-2 text-gray-800 hover:text-blue-600 transition-colors">Интервью с ведущим фермером: Секреты богатого урожая винограда</h2>
+                        <p class="text-gray-600 text-sm mb-4">Делимся опытом успешного виноградарства в условиях Наманганской области...</p>
+                        <a href="#" class="text-blue-600 hover:underline font-medium">Читать далее <i class="fas fa-arrow-right text-xs ml-1"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-12">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300">
+                    Загрузить еще новости
+                </button>
+            </div>
+        </section>
+
+        <section id="contact" class="page-section">
+            <div class="bg-white p-6 md:p-10 rounded-lg shadow-xl">
+                <h1 class="text-3xl md:text-4xl font-bold mb-8 text-center text-gray-700">Свяжитесь с Нами</h1>
+                <p class="text-center text-gray-600 mb-10 max-w-xl mx-auto">Мы всегда рады ответить на ваши вопросы, выслушать предложения или помочь с использованием платформы.</p>
+                <div class="grid md:grid-cols-2 gap-10">
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Контактная информация:</h2>
+                        <div class="space-y-4 text-gray-600">
+                            <p><i class="fas fa-map-marker-alt text-blue-500 mr-3 w-5 text-center"></i>г. Наманган, ул. Агрономов, 1, Узбекистан</p>
+                            <p><i class="fas fa-phone-alt text-blue-500 mr-3 w-5 text-center"></i><a href="tel:+998001234567" class="hover:text-blue-600">+998 (00) 123-45-67</a></p>
+                            <p><i class="fas fa-envelope text-blue-500 mr-3 w-5 text-center"></i><a href="mailto:info@agromarketnam.uz" class="hover:text-blue-600">info@agromarketnam.uz</a></p>
+                            <p><i class="fas fa-clock text-blue-500 mr-3 w-5 text-center"></i>Пн - Пт: 9:00 - 18:00</p>
+                        </div>
+                        <div class="mt-8">
+                             <h3 class="text-xl font-semibold text-gray-700 mb-3">Мы в социальных сетях:</h3>
+                             <div class="flex space-x-4">
+                                <a href="#" class="text-blue-600 hover:text-blue-800 text-2xl transition-colors"><i class="fab fa-telegram-plane"></i></a>
+                                <a href="#" class="text-blue-500 hover:text-blue-700 text-2xl transition-colors"><i class="fab fa-facebook-square"></i></a>
+                                <a href="#" class="text-pink-500 hover:text-pink-700 text-2xl transition-colors"><i class="fab fa-instagram"></i></a>
+                             </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Отправьте нам сообщение:</h2>
+                        <form id="contactForm" class="space-y-4">
+                            <div>
+                                <label for="contactName" class="block text-sm font-medium text-gray-700">Ваше имя</label>
+                                <input type="text" id="contactName" name="contactName" required class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="contactEmail" class="block text-sm font-medium text-gray-700">Ваш Email</label>
+                                <input type="email" id="contactEmail" name="contactEmail" required class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="contactSubject" class="block text-sm font-medium text-gray-700">Тема</label>
+                                <input type="text" id="contactSubject" name="contactSubject" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="contactMessage" class="block text-sm font-medium text-gray-700">Сообщение</label>
+                                <textarea id="contactMessage" name="contactMessage" rows="4" required class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                            </div>
+                            <div>
+                                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md shadow-sm transition duration-300">
+                                    <i class="fas fa-paper-plane mr-2"></i>Отправить Сообщение
+                                </button>
+                            </div>
+                        </form>
+                        <p id="contactFormStatus" class="mt-4 text-center"></p>
+                    </div>
+                </div>
+                 <div class="mt-10">
+                    <h2 class="text-2xl font-semibold text-gray-700 mb-4 text-center">Наше местоположение</h2>
+                    <div class="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-md">
+                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193656.3684814875!2d71.50000000000001!3d40.99999999999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38bb4c18a062032f%3A0x9c83a35535abb119!2sNamangan%2C%20Uzbekistan!5e0!3m2!1sen!2s!4v1684800000000!5m2!1sen!2s" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="w-full h-full"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="page-section">
+            <div class="bg-white p-6 md:p-10 rounded-lg shadow-xl">
+                <h1 class="text-3xl md:text-4xl font-bold mb-10 text-center text-gray-700">Часто Задаваемые Вопросы (FAQ)</h1>
+                <div class="space-y-6 max-w-3xl mx-auto">
+                    <details class="group bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                        <summary class="flex justify-between items-center font-semibold cursor-pointer text-gray-700 group-open:text-blue-600">
+                            <span>Как зарегистрироваться на платформе фермеру?</span>
+                            <i class="fas fa-chevron-down group-open:rotate-180 transition-transform"></i>
+                        </summary>
+                        <p class="text-gray-600 mt-3 text-sm leading-relaxed">
+                            Перейдите на страницу "Фермерам" и нажмите кнопку "Зарегистрироваться как Фермер". Заполните предложенную форму, указав информацию о вашем хозяйстве и контактные данные. После этого наша команда свяжется с вами для подтверждения.
+                        </p>
+                    </details>
+                    <details class="group bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                        <summary class="flex justify-between items-center font-semibold cursor-pointer text-gray-700 group-open:text-blue-600">
+                            <span>Какие преимущества получает оптовый покупатель?</span>
+                            <i class="fas fa-chevron-down group-open:rotate-180 transition-transform"></i>
+                        </summary>
+                        <p class="text-gray-600 mt-3 text-sm leading-relaxed">
+                            Оптовые покупатели получают доступ к широкому ассортименту свежей продукции напрямую от фермеров, конкурентные цены, гарантию качества, а также удобные инструменты для поиска и заказа товаров. Это позволяет оптимизировать закупки и получать лучшие условия.
+                        </p>
+                    </details>
+                    <details class="group bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                        <summary class="flex justify-between items-center font-semibold cursor-pointer text-gray-700 group-open:text-blue-600">
+                            <span>Есть ли комиссия за использование платформы?</span>
+                            <i class="fas fa-chevron-down group-open:rotate-180 transition-transform"></i>
+                        </summary>
+                        <p class="text-gray-600 mt-3 text-sm leading-relaxed">
+                            Информация о возможных комиссиях или условиях подписки будет доступна после регистрации и согласования условий сотрудничества. Мы стремимся сделать нашу платформу максимально выгодной для всех участников. На данный момент базовая регистрация и просмотр бесплатны.
+                        </p>
+                    </details>
+                    <details class="group bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                        <summary class="flex justify-between items-center font-semibold cursor-pointer text-gray-700 group-open:text-blue-600">
+                            <span>Как обеспечивается качество продукции?</span>
+                            <i class="fas fa-chevron-down group-open:rotate-180 transition-transform"></i>
+                        </summary>
+                        <p class="text-gray-600 mt-3 text-sm leading-relaxed">
+                            Мы работаем над системой верификации фермеров и поощряем предоставление сертификатов качества. Также покупатели могут оставлять отзывы о продукции и фермерах, что помогает поддерживать высокий уровень доверия и качества на платформе.
+                        </p>
+                    </details>
+                     <details class="group bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                        <summary class="flex justify-between items-center font-semibold cursor-pointer text-gray-700 group-open:text-blue-600">
+                            <span>Могу ли я разместить продукцию, если я небольшой фермер?</span>
+                            <i class="fas fa-chevron-down group-open:rotate-180 transition-transform"></i>
+                        </summary>
+                        <p class="text-gray-600 mt-3 text-sm leading-relaxed">
+                            Да, наша платформа открыта для фермеров любого масштаба. Мы заинтересованы в поддержке как крупных, так и малых фермерских хозяйств Наманганской области. Главное - это качество вашей продукции и готовность к сотрудничеству.
+                        </p>
+                    </details>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-10">
+        <div class="container mx-auto px-6 text-center">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-3">АгроМаркет Наманган</h3>
+                    <p class="text-sm text-gray-400">Соединяя поля с рынком.</p>
+                     <div class="flex space-x-4 mt-4 justify-center md:justify-start">
+                        <a href="#" class="text-gray-400 hover:text-white text-xl transition-colors"><i class="fab fa-telegram-plane"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white text-xl transition-colors"><i class="fab fa-facebook-square"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white text-xl transition-colors"><i class="fab fa-instagram"></i></a>
+                     </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-3">Быстрые ссылки</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-400 hover:text-white nav-link" data-page="about">О нас</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white nav-link" data-page="products">Продукты</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white nav-link" data-page="contact">Контакты</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white nav-link" data-page="faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-3">Свяжитесь с нами</h3>
+                    <p class="text-sm text-gray-400">г. Наманган, ул. Агрономов, 1</p>
+                    <p class="text-sm text-gray-400">info@agromarketnam.uz</p>
+                    <p class="text-sm text-gray-400">+998 (00) 123-45-67</p>
+                </div>
+            </div>
+            <hr class="border-gray-700 my-6">
+            <p class="text-sm text-gray-500">&copy; <span id="currentYear"></span> АгроМаркет Наманган. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <div id="farmerRegistrationModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" data-modal="farmerRegistrationModal">&times;</span>
+            <h2 class="text-2xl font-semibold mb-6 text-gray-700 text-center">Регистрация Фермера</h2>
+            <form id="farmerRegForm" class="space-y-4">
+                <div>
+                    <label for="farmerName" class="block text-sm font-medium text-gray-700">Наименование хозяйства / ФИО</label>
+                    <input type="text" id="farmerName" name="farmerName" required class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
+                </div>
+                <div>
+                    <label for="farmerPhone" class="block text-sm font-medium text-gray-700">Контактный телефон</label>
+                    <input type="tel" id="farmerPhone" name="farmerPhone" required class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
+                </div>
+                <div>
+                    <label for="farmerProducts" class="block text-sm font-medium text-gray-700">Основные виды продукции</label>
+                    <input type="text" id="farmerProducts" name="farmerProducts" placeholder="Например: яблоки, картофель, молоко" required class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
+                </div>
+                <div>
+                    <label for="farmerRegion" class="block text-sm font-medium text-gray-700">Район Наманганской области</label>
+                    <input type="text" id="farmerRegion" name="farmerRegion" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500">
+                </div>
+                <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-md shadow-sm transition duration-300">
+                    <i class="fas fa-paper-plane mr-2"></i>Отправить Заявку
+                </button>
+            </form>
+            <p id="farmerRegStatus" class="mt-4 text-center"></p>
+        </div>
+    </div>
+
+    <div id="buyerRegistrationModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" data-modal="buyerRegistrationModal">&times;</span>
+            <h2 class="text-2xl font-semibold mb-6 text-gray-700 text-center">Регистрация Оптового Покупателя</h2>
+            <form id="buyerRegForm" class="space-y-4">
+                <div>
+                    <label for="buyerCompanyName" class="block text-sm font-medium text-gray-700">Название компании / ФИО</label>
+                    <input type="text" id="buyerCompanyName" name="buyerCompanyName" required class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="buyerContactPerson" class="block text-sm font-medium text-gray-700">Контактное лицо</label>
+                    <input type="text" id="buyerContactPerson" name="buyerContactPerson" required class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="buyerPhone" class="block text-sm font-medium text-gray-700">Контактный телефон</label>
+                    <input type="tel" id="buyerPhone" name="buyerPhone" required class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="buyerNeededProducts" class="block text-sm font-medium text-gray-700">Интересующая продукция</label>
+                    <input type="text" id="buyerNeededProducts" name="buyerNeededProducts" placeholder="Например: овощи, фрукты оптом" required class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md shadow-sm transition duration-300">
+                    <i class="fas fa-paper-plane mr-2"></i>Отправить Заявку
+                </button>
+            </form>
+            <p id="buyerRegStatus" class="mt-4 text-center"></p>
+        </div>
+    </div>
+
+    <div id="productInquiryModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" data-modal="productInquiryModal">&times;</span>
+            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Запрос по продукту: <span id="inquiryProductName" class="text-blue-600"></span></h2>
+            <form id="productInquiryForm" class="space-y-4">
+                <input type="hidden" id="inquiryProductId" name="productId">
+                <div>
+                    <label for="inquiryName" class="block text-sm font-medium text-gray-700">Ваше имя</label>
+                    <input type="text" id="inquiryName" name="inquiryName" required class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="inquiryPhone" class="block text-sm font-medium text-gray-700">Ваш телефон</label>
+                    <input type="tel" id="inquiryPhone" name="inquiryPhone" required class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                 <div>
+                    <label for="inquiryQuantity" class="block text-sm font-medium text-gray-700">Примерный объем (кг, тонны)</label>
+                    <input type="text" id="inquiryQuantity" name="inquiryQuantity" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="inquiryMessage" class="block text-sm font-medium text-gray-700">Ваше сообщение/вопрос</label>
+                    <textarea id="inquiryMessage" name="inquiryMessage" rows="3" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md shadow-sm transition duration-300">
+                    <i class="fas fa-paper-plane mr-2"></i>Отправить Запрос
+                </button>
+            </form>
+            <p id="inquiryFormStatus" class="mt-4 text-center"></p>
+        </div>
+    </div>
+
+
+    <script>
+        // Mock Product Data
+        const allProducts = [
+            { id: 1, name: 'Яблоки "Голден"', category: 'fruits', price: '10,000 сум/кг', farmer: 'ФХ "Барака"', image: 'https://placehold.co/400x300/fca5a5/7f1d1d?text=Яблоки+Голден', description: 'Сочные и сладкие яблоки, выращенные в экологически чистом районе.' },
+            { id: 2, name: 'Картофель "Гала"', category: 'vegetables', price: '4,000 сум/кг', farmer: 'Фермер Исмоилов', image: 'https://placehold.co/400x300/fdba74/7c2d12?text=Картофель+Гала', description: 'Отборный картофель, идеально подходит для варки и жарки.' },
+            { id: 3, name: 'Молоко коровье', category: 'dairy', price: '8,000 сум/л', farmer: 'МТФ "Согдиана"', image: 'https://placehold.co/400x300/a5f3fc/0e7490?text=Молоко', description: 'Свежее натуральное молоко от здоровых коров.' },
+            { id: 4, name: 'Пшеница (зерно)', category: 'grains', price: '3,500 сум/кг', farmer: 'ООО "Зар Замин"', image: 'https://placehold.co/400x300/fcd34d/78350f?text=Пшеница', description: 'Высококачественное зерно пшеницы для мукомольных предприятий.' },
+            { id: 5, name: 'Помидоры "Бычье сердце"', category: 'vegetables', price: '12,000 сум/кг', farmer: 'ФХ "Наманган Агро"', image: 'https://placehold.co/400x300/f87171/7f1d1d?text=Помидоры', description: 'Крупные мясистые помидоры, отличный вкус.' },
+            { id: 6, name: 'Виноград "Дамский пальчик"', category: 'fruits', price: '15,000 сум/кг', farmer: 'Фермер Азизов', image: 'https://placehold.co/400x300/d8b4fe/581c87?text=Виноград', description: 'Сладкий и сочный виноград без косточек.' },
+            { id: 7, name: 'Баранина (туша)', category: 'meat', price: '75,000 сум/кг', farmer: 'Чорвадор Махмудов', image: 'https://placehold.co/400x300/fbcfe8/831843?text=Баранина', description: 'Молодая баранина, выращенная на натуральных кормах.' },
+            { id: 8, name: 'Морковь столовая', category: 'vegetables', price: '5,000 сум/кг', farmer: 'ФХ "Сабзавоткор"', image: 'https://placehold.co/400x300/fed7aa/9a3412?text=Морковь', description: 'Яркая и хрустящая морковь, богата витаминами.' },
+            { id: 9, name: 'Урюк сушеный (курага)', category: 'fruits', price: '40,000 сум/кг', farmer: 'ФХ "Олтин Водий"', image: 'https://placehold.co/400x300/fbbf24/78350f?text=Курага', description: 'Натуральная сушеная курага, без добавок.'},
+            { id: 10, name: 'Лук репчатый', category: 'vegetables', price: '3,000 сум/кг', farmer: 'Фермер Умаров', image: 'https://placehold.co/400x300/fef3c7/78350f?text=Лук', description: 'Качественный репчатый лук для любых блюд.'},
+            { id: 11, name: 'Творог домашний', category: 'dairy', price: '25,000 сум/кг', farmer: 'МТФ "Согдиана"', image: 'https://placehold.co/400x300/ecfccb/365314?text=Творог', description: 'Натуральный домашний творог, свежий и вкусный.'},
+            { id: 12, name: 'Рис "Лазер"', category: 'grains', price: '18,000 сум/кг', farmer: 'ООО "Зар Замин"', image: 'https://placehold.co/400x300/e0e7ff/3730a3?text=Рис+Лазер', description: 'Отборный рис сорта Лазер, идеален для плова.'},
+        ];
+
+        // Page Navigation
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pageSections = document.querySelectorAll('.page-section');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        function setActivePage(pageId, params = {}) {
+            pageSections.forEach(section => {
+                section.classList.remove('active');
+            });
+            const activeSection = document.getElementById(pageId);
+            if (activeSection) {
+                activeSection.classList.add('active');
+            }
+
+            navLinks.forEach(link => {
+                link.classList.remove('active-nav-link');
+                if (link.dataset.page === pageId) {
+                    link.classList.add('active-nav-link');
+                }
+            });
+            window.scrollTo(0, 0); // Scroll to top of page
+            mobileMenu.classList.add('hidden'); // Hide mobile menu on navigation
+
+            // Handle specific page initializations
+            if (pageId === 'products') {
+                const category = params.category || 'all';
+                document.getElementById('categoryFilter').value = category;
+                filterProducts();
+            }
+        }
+        
+        window.navigateToPage = setActivePage; // Make it globally accessible for inline onclick
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = link.dataset.page;
+                setActivePage(pageId);
+            });
+        });
+
+        // Mobile Menu Toggle
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Modal Handling
+        const openModalButtons = document.querySelectorAll('.open-modal-button');
+        const closeModalButtons = document.querySelectorAll('.close-button');
+        const modals = document.querySelectorAll('.modal');
+
+        openModalButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const modalId = button.dataset.modal;
+                document.getElementById(modalId).style.display = 'block';
+            });
+        });
+
+        closeModalButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const modalId = button.dataset.modal;
+                document.getElementById(modalId).style.display = 'none';
+                clearFormStatus(modalId);
+            });
+        });
+
+        window.addEventListener('click', (event) => {
+            modals.forEach(modal => {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                    clearFormStatus(modal.id);
+                }
+            });
+        });
+
+        function clearFormStatus(modalId) {
+            const statusP = document.querySelector(`#${modalId.replace('Modal', 'FormStatus')}`) || document.querySelector(`#${modalId.replace('Modal', 'Status')}`);
+             if (statusP) {
+                statusP.textContent = '';
+                statusP.className = 'mt-4 text-center';
+            }
+        }
+
+
+        // Product Page Logic
+        const productListContainer = document.getElementById('productList');
+        const productSearchInput = document.getElementById('productSearch');
+        const categoryFilterSelect = document.getElementById('categoryFilter');
+        const noResultsMessage = document.getElementById('noResultsMessage');
+
+        function displayProducts(productsToDisplay) {
+            if (!productListContainer) return;
+            productListContainer.innerHTML = ''; // Clear existing products
+            if (productsToDisplay.length === 0) {
+                noResultsMessage.classList.remove('hidden');
+            } else {
+                noResultsMessage.classList.add('hidden');
+            }
+
+            productsToDisplay.forEach(product => {
+                const productCard = `
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover product-card img">
+                        <div class="p-5 flex flex-col flex-grow">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">${product.name}</h3>
+                            <p class="text-sm text-gray-500 mb-1">Категория: ${product.category}</p>
+                            <p class="text-sm text-gray-500 mb-3">Фермер: ${product.farmer}</p>
+                            <p class="text-md font-bold text-blue-600 mb-3">${product.price}</p>
+                            <p class="text-gray-600 text-sm mb-4 flex-grow">${product.description.substring(0,100)}${product.description.length > 100 ? '...' : ''}</p>
+                            <button class="mt-auto w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 open-modal-button product-inquiry-btn" data-modal="productInquiryModal" data-product-id="${product.id}" data-product-name="${product.name}">
+                                <i class="fas fa-info-circle mr-2"></i>Запросить Информацию
+                            </button>
+                        </div>
+                    </div>
+                `;
+                productListContainer.innerHTML += productCard;
+            });
+            // Re-attach event listeners for newly created inquiry buttons
+            attachInquiryButtonListeners();
+        }
+        
+        function attachInquiryButtonListeners() {
+            document.querySelectorAll('.product-inquiry-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const modalId = button.dataset.modal;
+                    const productId = button.dataset.productId;
+                    const productName = button.dataset.productName;
+                    
+                    document.getElementById('inquiryProductName').textContent = productName;
+                    document.getElementById('inquiryProductId').value = productId;
+                    document.getElementById(modalId).style.display = 'block';
+                });
+            });
+        }
+
+
+        function filterProducts() {
+            const searchTerm = productSearchInput.value.toLowerCase();
+            const selectedCategory = categoryFilterSelect.value;
+
+            const filteredProducts = allProducts.filter(product => {
+                const nameMatch = product.name.toLowerCase().includes(searchTerm);
+                const categoryMatch = selectedCategory === 'all' || product.category === selectedCategory;
+                return nameMatch && categoryMatch;
+            });
+            displayProducts(filteredProducts);
+        }
+
+        if (productSearchInput && categoryFilterSelect) {
+            productSearchInput.addEventListener('input', filterProducts);
+            categoryFilterSelect.addEventListener('change', filterProducts);
+        }
+        
+        // Form Submission Handling (Mock)
+        function handleFormSubmit(formId, statusElementId, successMessage) {
+            const form = document.getElementById(formId);
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const statusElement = document.getElementById(statusElementId);
+                    statusElement.textContent = 'Отправка...';
+                    statusElement.className = 'mt-4 text-center text-yellow-600';
+
+                    // Simulate API call
+                    setTimeout(() => {
+                        statusElement.textContent = successMessage;
+                        statusElement.className = 'mt-4 text-center text-green-600';
+                        form.reset();
+                         // Optionally close modal after a delay
+                        setTimeout(() => {
+                            const modalId = form.closest('.modal').id;
+                            document.getElementById(modalId).style.display = 'none';
+                            clearFormStatus(modalId);
+                        }, 2000);
+                    }, 1500);
+                });
+            }
+        }
+
+        handleFormSubmit('farmerRegForm', 'farmerRegStatus', 'Заявка на регистрацию фермера успешно отправлена! Мы скоро свяжемся с вами.');
+        handleFormSubmit('buyerRegForm', 'buyerRegStatus', 'Заявка на регистрацию покупателя успешно отправлена! Мы скоро свяжемся с вами.');
+        handleFormSubmit('productInquiryForm', 'inquiryFormStatus', 'Ваш запрос по продукту успешно отправлен!');
+        handleFormSubmit('contactForm', 'contactFormStatus', 'Ваше сообщение успешно отправлено! Мы ответим вам в ближайшее время.');
+
+
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Initialize the first page (Home) and products on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            setActivePage('home'); // Default page
+            // Display all products initially if productListContainer exists (i.e., on products page, or if it were part of home)
+            if (productListContainer) {
+                 displayProducts(allProducts);
+            }
+        });
+
+    </script>
+</body>
+</html>
